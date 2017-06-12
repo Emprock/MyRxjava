@@ -16,5 +16,6 @@ public class MainActivity extends AppCompatActivity {
     private void initView() {
         TextView tv_id= (TextView) findViewById(R.id.tv_id);
         tv_id.setText("test");
+        tv_id.setEnabled(true);
     }
 }
