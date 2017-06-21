@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">MyRxjava2</string>
+    <string name="title_elementary">基本</string>
+    <string name="title_map">转换(map)</string>
+    <string name="title_zip">压合(zip)</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
