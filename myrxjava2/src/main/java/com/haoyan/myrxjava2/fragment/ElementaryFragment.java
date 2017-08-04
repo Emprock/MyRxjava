@@ -1,10 +1,12 @@
 package com.haoyan.myrxjava2.fragment;
 
 
+import android.app.Dialog;
 import android.app.Fragment;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -21,8 +23,13 @@ import com.haoyan.myrxjava2.https.ActivityLifeCycleEvent;
 import com.haoyan.myrxjava2.https.Api;
 import com.haoyan.myrxjava2.https.HttpUtil;
 import com.haoyan.myrxjava2.https.ProgressSubscriber;
+import com.haoyan.myrxjava2.https.Url;
+import com.haoyan.myrxjava2.network.Edoubanapi;
 import com.haoyan.myrxjava2.network.Network;
 import com.haoyan.myrxjava2.utils.MyViewHolder;
+import com.haoyan.myrxjava2.utils.rxjava.CommonObserver;
+import com.haoyan.myrxjava2.utils.rxjava.Transformer;
+import com.haoyan.myrxjava2.utils.http.RxHttpUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +51,7 @@ public class ElementaryFragment extends BaseFragment {
     SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.gridRv)
     RecyclerView gridRv;
+    private Dialog loading_dialog;
     private List<EMovieBean.SubjectsBean> storiesList;
     private EDoubanAdapter doubanListAdapter;
     public ElementaryFragment() {
@@ -54,11 +62,14 @@ public class ElementaryFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         View view =inflater.inflate(R.layout.fragment_elementary, container, false);
         ButterKnife.bind(this, view);
+        loading_dialog = new AlertDialog.Builder(getActivity()).setMessage("loading...").create();
         initView();
 //        search();
-        initData();
+//        initData();
+        test();
         return view;
     }
+
 
 
 
@@ -119,13 +130,14 @@ public class ElementaryFragment extends BaseFragment {
 
             @Override
             protected void _onNext(EMovieBean eMovieBean) {
-                swipeRefreshLayout.setRefreshing(false);
                 storiesList.addAll(eMovieBean.getSubjects());
                 doubanListAdapter.notifyDataSetChanged();
+
             }
 
             @Override
             protected void _onError(String message) {
+                swipeRefreshLayout.setRefreshing(false);
                 Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
             }
 
@@ -133,11 +145,38 @@ public class ElementaryFragment extends BaseFragment {
             public void onSubscribe(@NonNull Disposable d) {
 
             }
-        },"cacheKey", ActivityLifeCycleEvent.DESTROY,lifecycleSubject,false,false);
+        },"cacheKey", ActivityLifeCycleEvent.DESTROY,lifecycleSubject,false);
     }
 
     @Override
     public void onPause() {
         super.onPause();
+    }
+
+
+    private void test() {
+        RxHttpUtils.getSInstance()
+                .baseUrl(Url.BASE_URL)
+                .cache(true)
+                .readTimeout(500)
+                .createSApi(Edoubanapi.class)
+                .fetchMovieTop250(0,10)
+                .compose(Transformer.<EMovieBean>switchSchedulers(loading_dialog))
+                .subscribe(new CommonObserver<EMovieBean>(loading_dialog) {
+                    @Override
+                    protected void getDisposable(Disposable d) {
+                    }
+
+                    @Override
+                    protected void onError(String errorMsg) {
+                    }
+
+                    @Override
+                    protected void onSuccess(EMovieBean eMovieBean) {
+                        storiesList.addAll(eMovieBean.getSubjects());
+                        doubanListAdapter.notifyDataSetChanged();
+                        showToast("请求成功");
+                    }
+                });
     }
 }

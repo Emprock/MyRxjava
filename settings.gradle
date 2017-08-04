@@ -1,1 +1,1 @@
-include ':app', ':myrxjava2'
+include ':app', ':myrxjava2', ':rxjava2'

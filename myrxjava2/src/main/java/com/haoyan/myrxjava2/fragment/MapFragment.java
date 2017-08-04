@@ -13,11 +13,11 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.haoyan.myrxjava2.base.BaseFragment;
 import com.haoyan.myrxjava2.R;
 import com.haoyan.myrxjava2.adapter.MapListAdapter;
+import com.haoyan.myrxjava2.base.BaseFragment;
+import com.haoyan.myrxjava2.data.Data;
 import com.haoyan.myrxjava2.entity.MapEntity;
-import com.haoyan.myrxjava2.network.Network;
 import com.haoyan.myrxjava2.utils.MyViewHolder;
 
 import java.util.ArrayList;
@@ -26,10 +26,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -78,16 +76,16 @@ public class MapFragment extends BaseFragment {
     }
 
     private void search() {
-        Observer<MapEntity> observer = new Observer<MapEntity>() {
+        Observer<List<MapEntity.ResultsBean>> observer = new Observer<List<MapEntity.ResultsBean>>() {
             @Override
             public void onSubscribe(@NonNull Disposable d) {
 
             }
 
             @Override
-            public void onNext(@NonNull MapEntity mapEntity) {
+            public void onNext(@NonNull List<MapEntity.ResultsBean> resultsBeen) {
                 swipeRefreshLayout.setRefreshing(false);
-                mlist.addAll(mapEntity.getResults());
+                mlist.addAll(resultsBeen);
                 madapter.notifyDataSetChanged();
             }
 
@@ -104,11 +102,18 @@ public class MapFragment extends BaseFragment {
         };
         swipeRefreshLayout.setRefreshing(true);
         //多处代码这样写，猜测是及时关闭io线程并切换回主线程
-        Network.getGankApi().getBeauties(10,2)
-                .subscribeOn(Schedulers.io())
-                .unsubscribeOn(Schedulers.io())
-                .subscribeOn(AndroidSchedulers.mainThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(observer);
+        Data.getInstance().subscribeData(observer,mlist);
+//        Network.getGankApi().getBeauties(10,2)
+//                .map(new Function<MapEntity,List<MapEntity.ResultsBean>>() {
+//                    @Override
+//                    public List<MapEntity.ResultsBean> apply(@NonNull MapEntity mapEntity) throws Exception {
+//                        return mapEntity.getResults();
+//                    }
+//                })
+//                .subscribeOn(Schedulers.io())
+//                .unsubscribeOn(Schedulers.io())
+//                .subscribeOn(AndroidSchedulers.mainThread())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(observer);
     }
 }

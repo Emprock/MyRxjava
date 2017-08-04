@@ -69,7 +69,8 @@ public class Api {
                     .addConverterFactory(GsonConverterFactory.create())
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .baseUrl(Url.BASE_URL)
-                    .build().create(Edoubanapi.class);
+                    .build()
+                    .create(Edoubanapi.class);
         }
         return SERVICE;
     }

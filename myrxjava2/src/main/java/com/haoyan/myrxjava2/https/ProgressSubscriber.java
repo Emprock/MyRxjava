@@ -2,18 +2,13 @@ package com.haoyan.myrxjava2.https;
 
 
 import android.content.Context;
-
 import com.haoyan.myrxjava2.view.ProgressDialogHandler;
-
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
-
-
 /**
  * 用于在Http请求开始时，自动显示一个ProgressDialog
- * 在Http请求结束是，关闭ProgressDialog
- * 调用者自己对请求数据进行处理
+ * 在Http请求结束时，关闭ProgressDialog
  * 调用dialog显示隐藏及网络请求失败原因，为观察者
  */
 
@@ -58,12 +53,9 @@ public  abstract class ProgressSubscriber<T> implements ProgressCancelListener,O
     }
     @Override
     public void onCancelProgress() {
-
-        mDisposable.dispose();
-        //以下代码在Subscriber尝试一下
-//        if (!this.isUnsubscribed()) {
-//            this.unsubscribe();
-//        }
+        if (mDisposable != null && !mDisposable.isDisposed()) {
+            mDisposable.dispose();
+        }
     }
     @Override
     public void onError(Throwable e) {
