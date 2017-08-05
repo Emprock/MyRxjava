@@ -1,7 +1,7 @@
 package com.haoyan.rxjava2.rxhttputils.Interceptor;
 
 
-import com.haoyan.rxjava2.rxhttputils.utilss.AppUtils;
+import com.haoyan.rxjava2.rxhttputils.utilss.RxAppUtils;
 
 import java.io.IOException;
 import java.util.Map;
@@ -15,10 +15,10 @@ import okhttp3.Response;
  * Created by haoyan on 2017/7/28.
  */
 
-public class HeaderInterceptor implements Interceptor {
+public class RxHeaderInterceptor implements Interceptor {
     private Map<String, Object> headerMaps = new TreeMap<>();
 
-    public HeaderInterceptor(Map<String, Object> headerMaps) {
+    public RxHeaderInterceptor(Map<String, Object> headerMaps) {
         this.headerMaps = headerMaps;
     }
 
@@ -43,10 +43,10 @@ public class HeaderInterceptor implements Interceptor {
     }
 
     private String getUUID() {
-        return AppUtils.getUUID();
+        return RxAppUtils.getUUID();
     }
 
     private String getAppVersion() {
-        return AppUtils.getAppVersion();
+        return RxAppUtils.getAppVersion();
     }
 }

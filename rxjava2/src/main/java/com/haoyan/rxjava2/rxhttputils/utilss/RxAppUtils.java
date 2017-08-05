@@ -6,7 +6,7 @@ import android.content.pm.PackageManager;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 
-import com.haoyan.rxjava2.utils.App;
+import com.haoyan.rxjava2.RxApp;
 
 import java.util.UUID;
 
@@ -16,7 +16,7 @@ import java.util.UUID;
  * 关于应用的工具类
  */
 
-public class AppUtils {
+public class RxAppUtils {
     /**
      * 获取手机版本号
      *
@@ -26,8 +26,8 @@ public class AppUtils {
         PackageInfo pi;
         String versionNum;
         try {
-            PackageManager pm = App.getInstance().getPackageManager();
-            pi = pm.getPackageInfo(App.getInstance().getPackageName(), PackageManager.GET_CONFIGURATIONS);
+            PackageManager pm = RxApp.getInstance().getPackageManager();
+            pi = pm.getPackageInfo(RxApp.getInstance().getPackageName(), PackageManager.GET_CONFIGURATIONS);
             versionNum = pi.versionName;
         } catch (Exception e) {
             versionNum = "0";
@@ -45,9 +45,9 @@ public class AppUtils {
      */
     public static String getUUID() {
 
-        Context context = App.getInstance();
+        Context context = RxApp.getInstance();
 
-        String uuid = (String) SPUtils.get(context, "PHONE_UUID", "");
+        String uuid = (String) RxSPUtils.get(context, "PHONE_UUID", "");
 
         if (TextUtils.isEmpty(uuid)) {
 
@@ -61,7 +61,7 @@ public class AppUtils {
                 UUID deviceUuid = new UUID(androidId.hashCode(), ((long) tmDevice.hashCode() << 32) | tmSerial.hashCode());
                 String uniqueId = deviceUuid.toString();
                 uuid = uniqueId;
-                SPUtils.put(context, "PHONE_UUID", uuid);
+                RxSPUtils.put(context, "PHONE_UUID", uuid);
 
             } catch (Exception e) {
                 e.printStackTrace();

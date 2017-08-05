@@ -6,7 +6,7 @@ import java.util.List;
  * Created by haoyan on 2017/6/17.
  */
 
-public class EMovieBean {
+public class RxMovieBean {
 
     /**
      * count : 20

@@ -16,7 +16,7 @@ import io.reactivex.schedulers.Schedulers;
  * 控制操作线程的辅助类
  */
 
-public class Transformer {
+public class RxTransformer {
     /**
      * 带参数  显示loading对话框
      *

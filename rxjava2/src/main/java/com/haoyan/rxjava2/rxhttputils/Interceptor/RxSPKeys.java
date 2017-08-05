@@ -4,7 +4,7 @@ package com.haoyan.rxjava2.rxhttputils.Interceptor;
  * Created by haoyan on 2017/7/28.
  */
 
-public interface SPKeys {
+public interface RxSPKeys {
     /**
      * 保存cookie
      */

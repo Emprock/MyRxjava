@@ -1,8 +1,6 @@
 package com.haoyan.rxjava2;
 
 
-import com.haoyan.rxjava2.utils.App;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,7 +8,7 @@ import java.util.Map;
  * Created by haoyan on 2017/7/28.
  */
 
-public class MyApplication extends App {
+public class MyApplication extends RxApp {
     Map<String, Object> headerMaps = new HashMap<>();
 
     @Override

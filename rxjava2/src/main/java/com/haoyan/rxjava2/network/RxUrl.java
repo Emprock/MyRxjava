@@ -1,6 +1,6 @@
 package com.haoyan.rxjava2.network;
 
-public class Url {
+public class RxUrl {
     /**
      * 请求地址
      */

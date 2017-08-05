@@ -13,31 +13,31 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.haoyan.rxjava2.entity.EMovieBean;
-import com.haoyan.rxjava2.network.Edoubanapi;
-import com.haoyan.rxjava2.network.Url;
+import com.haoyan.rxjava2.entity.RxMovieBean;
+import com.haoyan.rxjava2.network.Rxdoubanapi;
+import com.haoyan.rxjava2.network.RxUrl;
 import com.haoyan.rxjava2.recyclerutil.CommonAdapter;
 import com.haoyan.rxjava2.recyclerutil.OnItemClickListener;
 import com.haoyan.rxjava2.recyclerutil.ViewHolder;
 import com.haoyan.rxjava2.refresh.SwipyRefreshLayout;
 import com.haoyan.rxjava2.rxhttputils.http.RxHttpUtils;
-import com.haoyan.rxjava2.rxhttputils.rxjava.CommonObserver;
-import com.haoyan.rxjava2.rxhttputils.rxjava.Transformer;
+import com.haoyan.rxjava2.rxhttputils.rxjava.RxCommonObserver;
+import com.haoyan.rxjava2.rxhttputils.rxjava.RxTransformer;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.disposables.Disposable;
 
-public class MainActivity extends AppCompatActivity {
+public class RxjavaActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private RecyclerView mRecyclerView;
     // private TextView mTextView;
-    private CommonAdapter<EMovieBean.SubjectsBean> commonadapter;
+    private CommonAdapter<RxMovieBean.SubjectsBean> commonadapter;
     private SwipyRefreshLayout swipeRefreshLayout;
 
     private Dialog loading_dialog;
-    private List<EMovieBean.SubjectsBean> storiesList;
+    private List<RxMovieBean.SubjectsBean> storiesList;
 
     private final int TOP_REFRESH = 1;
     private final int BOTTOM_REFRESH = 2;
@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_rxjava);
         initView();
         dataView(start,pages);
         setListener();
@@ -60,9 +60,9 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView = (RecyclerView)findViewById(R.id.id_stickynavlayout_innerscrollview);
         mRecyclerView.setLayoutManager(new GridLayoutManager(this,2));
         loading_dialog = new AlertDialog.Builder(this).setMessage("loading...").create();
-        commonadapter = new CommonAdapter<EMovieBean.SubjectsBean>(this,R.layout.grid_item ,storiesList) {
+        commonadapter = new CommonAdapter<RxMovieBean.SubjectsBean>(this,R.layout.rxjava_grid_item,storiesList) {
             @Override
-            public void convert(ViewHolder holder, EMovieBean.SubjectsBean subjectsBean) {
+            public void convert(ViewHolder holder, RxMovieBean.SubjectsBean subjectsBean) {
                 ImageView imgview=holder.getView(R.id.imageIv);
                 Glide.with(holder.itemView.getContext())
                         .load(subjectsBean.getImages().getLarge()).into(imgview);
@@ -84,13 +84,13 @@ public class MainActivity extends AppCompatActivity {
     }
     private void dataView(int start,int pag) {
         RxHttpUtils.getSInstance()
-                .baseUrl(Url.BASE_URL)
+                .baseUrl(RxUrl.BASE_URL)
                 .cache(true)
                 .readTimeout(500)
-                .createSApi(Edoubanapi.class)
+                .createSApi(Rxdoubanapi.class)
                 .fetchMovieTop250(start, pag)
-                .compose(Transformer.<EMovieBean>switchSchedulers(loading_dialog))
-                .subscribe(new CommonObserver<EMovieBean>(loading_dialog) {
+                .compose(RxTransformer.<RxMovieBean>switchSchedulers(loading_dialog))
+                .subscribe(new RxCommonObserver<RxMovieBean>(loading_dialog) {
                     @Override
                     protected void getDisposable(Disposable d) {
                     }
@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    protected void onSuccess(EMovieBean eMovieBean) {
+                    protected void onSuccess(RxMovieBean eMovieBean) {
                         storiesList.addAll(eMovieBean.getSubjects());
                         commonadapter.notifyDataSetChanged();
                         showToast("请求成功");
@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case BOTTOM_REFRESH:
                 if(start>30){
-                    Toast.makeText(MainActivity.this, "到头了亲", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RxjavaActivity.this, "到头了亲", Toast.LENGTH_SHORT).show();
                 }else{
                     start=start+10;
                     dataView(start,pages);

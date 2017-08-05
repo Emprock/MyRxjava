@@ -2,7 +2,7 @@ package com.haoyan.rxjava2.rxhttputils.Interceptor;
 
 import android.util.Log;
 
-import com.haoyan.rxjava2.rxhttputils.utilss.SPUtils;
+import com.haoyan.rxjava2.rxhttputils.utilss.RxSPUtils;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -16,11 +16,11 @@ import okhttp3.Response;
  * 请求头里边添加cookie
  */
 
-public class AddCookiesInterceptor implements Interceptor {
+public class RxAddCookiesInterceptor implements Interceptor {
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request.Builder builder = chain.request().newBuilder();
-        HashSet<String> preferences = (HashSet<String>) SPUtils.get(SPKeys.COOKIE, new HashSet<String>());
+        HashSet<String> preferences = (HashSet<String>) RxSPUtils.get(RxSPKeys.COOKIE, new HashSet<String>());
         if (preferences != null) {
             for (String cookie : preferences) {
                 builder.addHeader("Cookie", cookie);

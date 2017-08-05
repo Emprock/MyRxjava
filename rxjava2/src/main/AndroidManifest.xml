@@ -18,7 +18,7 @@
         android:supportsRtl="true"
         android:name=".MyApplication"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".RxjavaActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

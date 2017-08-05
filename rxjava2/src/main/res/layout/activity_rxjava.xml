@@ -4,7 +4,11 @@
     xmlns:xtao="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
+    <!--
+    direction="both" 上下拉
+    direction="top" 下拉
+    direction="bottom" 上拉
+    -->
     <com.haoyan.rxjava2.refresh.SwipyRefreshLayout
         android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"

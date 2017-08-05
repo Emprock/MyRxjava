@@ -10,13 +10,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by haoyan on 2017/7/26.
  */
 
-public class RetrofitClient {
-    private static RetrofitClient instance;
+public class RxRetrofitClient {
+    private static RxRetrofitClient instance;
 
     private Retrofit.Builder mRetrofitBuilder;
     private OkHttpClient.Builder mOkHttpBuilder;
 
-    public RetrofitClient() {
+    public RxRetrofitClient() {
 
         mOkHttpBuilder = new OkHttpClient.Builder();
 
@@ -27,12 +27,12 @@ public class RetrofitClient {
     }
 
 
-    public static RetrofitClient getInstance() {
+    public static RxRetrofitClient getInstance() {
 
         if (instance == null) {
-            synchronized (RetrofitClient.class) {
+            synchronized (RxRetrofitClient.class) {
                 if (instance == null) {
-                    instance = new RetrofitClient();
+                    instance = new RxRetrofitClient();
                 }
             }
 

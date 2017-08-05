@@ -4,10 +4,10 @@ import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.haoyan.rxjava2.rxhttputils.Interceptor.AddCookiesInterceptor;
-import com.haoyan.rxjava2.rxhttputils.Interceptor.CacheInterceptor;
-import com.haoyan.rxjava2.rxhttputils.Interceptor.HeaderInterceptor;
-import com.haoyan.rxjava2.rxhttputils.Interceptor.ReceivedCookiesInterceptor;
+import com.haoyan.rxjava2.rxhttputils.Interceptor.RxAddCookiesInterceptor;
+import com.haoyan.rxjava2.rxhttputils.Interceptor.RxCacheInterceptor;
+import com.haoyan.rxjava2.rxhttputils.Interceptor.RxHeaderInterceptor;
+import com.haoyan.rxjava2.rxhttputils.Interceptor.RxReceivedCookiesInterceptor;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import java.io.File;
@@ -26,8 +26,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * 网络请求-----可以对每个请求单独配置参数
  */
 
-public class SingleRxHttp {
-    private static SingleRxHttp instance;
+public class RxSingleRxHttp {
+    private static RxSingleRxHttp instance;
 
     private String baseUrl;
 
@@ -48,11 +48,11 @@ public class SingleRxHttp {
 
     private OkHttpClient okClient;
 
-    public static SingleRxHttp getInstance() {
+    public static RxSingleRxHttp getInstance() {
         if (instance == null) {
-            synchronized (SingleRxHttp.class) {
+            synchronized (RxSingleRxHttp.class) {
                 if (instance == null) {
-                    instance = new SingleRxHttp();
+                    instance = new RxSingleRxHttp();
                 }
             }
 
@@ -60,48 +60,48 @@ public class SingleRxHttp {
         return instance;
     }
 
-    public SingleRxHttp baseUrl(String baseUrl) {
+    public RxSingleRxHttp baseUrl(String baseUrl) {
         this.baseUrl = baseUrl;
         return this;
     }
 
-    public SingleRxHttp addHeaders(Map<String, Object> headerMaps) {
+    public RxSingleRxHttp addHeaders(Map<String, Object> headerMaps) {
         this.headerMaps = headerMaps;
         return this;
     }
 
-    public SingleRxHttp log(boolean isShowLog) {
+    public RxSingleRxHttp log(boolean isShowLog) {
         this.isShowLog = isShowLog;
         return this;
     }
 
-    public SingleRxHttp cache(boolean cache) {
+    public RxSingleRxHttp cache(boolean cache) {
         this.cache = cache;
         return this;
     }
 
-    public SingleRxHttp saveCookie(boolean saveCookie) {
+    public RxSingleRxHttp saveCookie(boolean saveCookie) {
         this.saveCookie = saveCookie;
         return this;
     }
 
-    public SingleRxHttp cachePath(String cachePath, long maxSize) {
+    public RxSingleRxHttp cachePath(String cachePath, long maxSize) {
         this.cachePath = cachePath;
         this.cacheMaxSize = maxSize;
         return this;
     }
 
-    public SingleRxHttp readTimeout(long readTimeout) {
+    public RxSingleRxHttp readTimeout(long readTimeout) {
         this.readTimeout = readTimeout;
         return this;
     }
 
-    public SingleRxHttp writeTimeout(long writeTimeout) {
+    public RxSingleRxHttp writeTimeout(long writeTimeout) {
         this.writeTimeout = writeTimeout;
         return this;
     }
 
-    public SingleRxHttp connectTimeout(long connectTimeout) {
+    public RxSingleRxHttp connectTimeout(long connectTimeout) {
         this.connectTimeout = connectTimeout;
         return this;
     }
@@ -140,7 +140,7 @@ public class SingleRxHttp {
 //        return this;
 //    }
 
-    public SingleRxHttp client(OkHttpClient okClient) {
+    public RxSingleRxHttp client(OkHttpClient okClient) {
         this.okClient = okClient;
         return this;
     }
@@ -186,10 +186,10 @@ public class SingleRxHttp {
 
         singleOkHttpBuilder.retryOnConnectionFailure(true);
 
-        singleOkHttpBuilder.addInterceptor(new HeaderInterceptor(headerMaps));
+        singleOkHttpBuilder.addInterceptor(new RxHeaderInterceptor(headerMaps));
 
         if (cache) {
-            CacheInterceptor cacheInterceptor = new CacheInterceptor();
+            RxCacheInterceptor cacheInterceptor = new RxCacheInterceptor();
             Cache cache;
             if (!TextUtils.isEmpty(cachePath) && cacheMaxSize > 0) {
                 cache = new Cache(new File(cachePath), cacheMaxSize);
@@ -215,8 +215,8 @@ public class SingleRxHttp {
 
         if (saveCookie) {
             singleOkHttpBuilder
-                    .addInterceptor(new AddCookiesInterceptor())
-                    .addInterceptor(new ReceivedCookiesInterceptor());
+                    .addInterceptor(new RxAddCookiesInterceptor())
+                    .addInterceptor(new RxReceivedCookiesInterceptor());
         }
 
         singleOkHttpBuilder.readTimeout(readTimeout > 0 ? readTimeout : 10, TimeUnit.SECONDS);

@@ -3,7 +3,7 @@ package com.haoyan.rxjava2.rxhttputils.utilss;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.haoyan.rxjava2.utils.App;
+import com.haoyan.rxjava2.RxApp;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -14,8 +14,8 @@ import java.util.Set;
  * Created by haoyan on 2017/7/28.
  */
 
-public class SPUtils {
-    public SPUtils() {
+public class RxSPUtils {
+    public RxSPUtils() {
         /* cannot be instantiated */
         throw new UnsupportedOperationException("cannot be instantiated");
     }
@@ -151,7 +151,7 @@ public class SPUtils {
      * @return
      */
     private static SharedPreferences obtainPref() {
-        Context context = App.getInstance();
+        Context context = RxApp.getInstance();
         SharedPreferences pref = context.getSharedPreferences(FILE_NAME,
                 Context.MODE_PRIVATE);
         return pref;

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-import com.haoyan.rxjava2.utils.App;
+import com.haoyan.rxjava2.RxApp;
 
 import java.io.IOException;
 
@@ -18,7 +18,7 @@ import okhttp3.Response;
  * 网络缓存
  */
 
-public class CacheInterceptor  implements Interceptor {
+public class RxCacheInterceptor implements Interceptor {
 
     @Override
     public Response intercept(Chain chain) throws IOException {
@@ -52,7 +52,7 @@ public class CacheInterceptor  implements Interceptor {
      * @return 返回值
      */
     public static boolean isNetworkConnected() {
-        Context context = App.getInstance();
+        Context context = RxApp.getInstance();
         if (context != null) {
             ConnectivityManager mConnectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();

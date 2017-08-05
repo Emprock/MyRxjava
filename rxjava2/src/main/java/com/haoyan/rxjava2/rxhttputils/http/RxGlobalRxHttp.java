@@ -3,9 +3,9 @@ package com.haoyan.rxjava2.rxhttputils.http;
 import android.os.Environment;
 import android.text.TextUtils;
 
-import com.haoyan.rxjava2.rxhttputils.Interceptor.CacheInterceptor;
-import com.haoyan.rxjava2.rxhttputils.Interceptor.HeaderInterceptor;
-import com.haoyan.rxjava2.rxhttputils.rxjava.RetrofitClient;
+import com.haoyan.rxjava2.rxhttputils.Interceptor.RxCacheInterceptor;
+import com.haoyan.rxjava2.rxhttputils.Interceptor.RxHeaderInterceptor;
+import com.haoyan.rxjava2.rxhttputils.rxjava.RxRetrofitClient;
 
 import java.io.File;
 import java.util.Map;
@@ -20,15 +20,15 @@ import retrofit2.Retrofit;
  * 网络请求工具类---使用的是全局配置的变量
  */
 
-public class GlobalRxHttp {
-    private static GlobalRxHttp instance;
+public class RxGlobalRxHttp {
+    private static RxGlobalRxHttp instance;
 
-    public static GlobalRxHttp getInstance() {
+    public static RxGlobalRxHttp getInstance() {
 
         if (instance == null) {
-            synchronized (GlobalRxHttp.class) {
+            synchronized (RxGlobalRxHttp.class) {
                 if (instance == null) {
-                    instance = new GlobalRxHttp();
+                    instance = new RxGlobalRxHttp();
                 }
             }
 
@@ -42,7 +42,7 @@ public class GlobalRxHttp {
      * @param baseUrl
      * @return
      */
-    public GlobalRxHttp setBaseUrl(String baseUrl) {
+    public RxGlobalRxHttp setBaseUrl(String baseUrl) {
         getGlobalRetrofitBuilder().baseUrl(baseUrl);
         return this;
     }
@@ -54,7 +54,7 @@ public class GlobalRxHttp {
      * @param okClient
      * @return
      */
-    public GlobalRxHttp setOkClient(OkHttpClient okClient) {
+    public RxGlobalRxHttp setOkClient(OkHttpClient okClient) {
         getGlobalRetrofitBuilder().client(okClient);
         return this;
     }
@@ -66,8 +66,8 @@ public class GlobalRxHttp {
      * @param headerMaps
      * @return
      */
-    public GlobalRxHttp setHeaders(Map<String, Object> headerMaps) {
-        getGlobalOkHttpBuilder().addInterceptor(new HeaderInterceptor(headerMaps));
+    public RxGlobalRxHttp setHeaders(Map<String, Object> headerMaps) {
+        getGlobalOkHttpBuilder().addInterceptor(new RxHeaderInterceptor(headerMaps));
         return this;
     }
 
@@ -96,8 +96,8 @@ public class GlobalRxHttp {
      *
      * @return
      */
-    public GlobalRxHttp setCache() {
-        CacheInterceptor cacheInterceptor = new CacheInterceptor();
+    public RxGlobalRxHttp setCache() {
+        RxCacheInterceptor cacheInterceptor = new RxCacheInterceptor();
         Cache cache = new Cache(new File(Environment.getExternalStorageDirectory().getPath() + "/rxHttpCacheData")
                 , 1024 * 1024 * 100);
         getGlobalOkHttpBuilder().addInterceptor(cacheInterceptor)
@@ -113,9 +113,9 @@ public class GlobalRxHttp {
      * @param maxSize
      * @return
      */
-    public GlobalRxHttp setCache(String cachePath, long maxSize) {
+    public RxGlobalRxHttp setCache(String cachePath, long maxSize) {
         if (!TextUtils.isEmpty(cachePath) && maxSize > 0) {
-            CacheInterceptor cacheInterceptor = new CacheInterceptor();
+            RxCacheInterceptor cacheInterceptor = new RxCacheInterceptor();
             Cache cache = new Cache(new File(cachePath), maxSize);
             getGlobalOkHttpBuilder()
                     .addInterceptor(cacheInterceptor)
@@ -170,7 +170,7 @@ public class GlobalRxHttp {
      * @param second
      * @return
      */
-    public GlobalRxHttp setConnectTimeout(long second) {
+    public RxGlobalRxHttp setConnectTimeout(long second) {
         getGlobalOkHttpBuilder().readTimeout(second, TimeUnit.SECONDS);
         return this;
     }
@@ -219,7 +219,7 @@ public class GlobalRxHttp {
      * @return
      */
     public static Retrofit getGlobalRetrofit() {
-        return RetrofitClient.getInstance().getRetrofit();
+        return RxRetrofitClient.getInstance().getRetrofit();
     }
 
     /**
@@ -228,7 +228,7 @@ public class GlobalRxHttp {
      * @return
      */
     public Retrofit.Builder getGlobalRetrofitBuilder() {
-        return RetrofitClient.getInstance().getRetrofitBuilder();
+        return RxRetrofitClient.getInstance().getRetrofitBuilder();
     }
 
     public OkHttpClient.Builder getGlobalOkHttpBuilder() {

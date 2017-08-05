@@ -2,7 +2,7 @@ package com.haoyan.rxjava2.rxhttputils.rxjava;
 
 import android.widget.Toast;
 
-import com.haoyan.rxjava2.utils.App;
+import com.haoyan.rxjava2.RxApp;
 
 import java.io.IOException;
 import java.net.ConnectException;
@@ -19,7 +19,7 @@ import retrofit2.HttpException;
  * Created by haoyan on 2017/7/28.
  */
 
-public abstract class BaseObserver<T> implements Observer<T>, ISubscriber<T> {
+public abstract class RxBaseObserver<T> implements Observer<T>, RxISubscriber<T> {
     private Toast mToast;
     public static final String errorMsg_SocketTimeoutException = "网络链接超时，请检查您的网络状态，稍后重试！";
     public static final String errorMsg_ConnectException = "网络链接异常，请检查您的网络状态";
@@ -75,7 +75,7 @@ public abstract class BaseObserver<T> implements Observer<T>, ISubscriber<T> {
      */
     protected void showToast(String msg) {
         if (mToast == null) {
-            mToast = Toast.makeText(App.getInstance(), msg, Toast.LENGTH_SHORT);
+            mToast = Toast.makeText(RxApp.getInstance(), msg, Toast.LENGTH_SHORT);
         } else {
             mToast.setText(msg);
         }

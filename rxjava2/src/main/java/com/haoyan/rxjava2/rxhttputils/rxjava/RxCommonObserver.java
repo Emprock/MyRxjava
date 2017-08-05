@@ -9,13 +9,13 @@ import io.reactivex.disposables.Disposable;
  * 通用的Observer
  */
 
-public abstract class CommonObserver<T> extends BaseObserver<T> {
+public abstract class RxCommonObserver<T> extends RxBaseObserver<T> {
     private Dialog mProgressDialog;
 
-    public CommonObserver() {
+    public RxCommonObserver() {
     }
 
-    public CommonObserver(Dialog progressDialog) {
+    public RxCommonObserver(Dialog progressDialog) {
         mProgressDialog = progressDialog;
     }
 

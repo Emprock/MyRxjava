@@ -20,8 +20,8 @@ public class RxHttpUtils {
         return instance;
     }
 
-    public GlobalRxHttp config() {
-        return GlobalRxHttp.getInstance();
+    public RxGlobalRxHttp config() {
+        return RxGlobalRxHttp.getInstance();
     }
 
 
@@ -33,7 +33,7 @@ public class RxHttpUtils {
      * @return
      */
     public static <K> K createApi(Class<K> cls) {
-        return GlobalRxHttp.createGApi(cls);
+        return RxGlobalRxHttp.createGApi(cls);
     }
 
     /**
@@ -41,9 +41,9 @@ public class RxHttpUtils {
      *
      * @return
      */
-    public static SingleRxHttp getSInstance() {
+    public static RxSingleRxHttp getSInstance() {
 
-        return SingleRxHttp.getInstance();
+        return RxSingleRxHttp.getInstance();
     }
 //
 //

@@ -1,7 +1,7 @@
 package com.haoyan.rxjava2.rxhttputils.Interceptor;
 
 
-import com.haoyan.rxjava2.rxhttputils.utilss.SPUtils;
+import com.haoyan.rxjava2.rxhttputils.utilss.RxSPUtils;
 
 import java.io.IOException;
 import java.util.Calendar;
@@ -18,7 +18,7 @@ import static java.util.Calendar.getInstance;
  * 接受服务器发的cookie   并保存到本地
  */
 
-public class ReceivedCookiesInterceptor implements Interceptor {
+public class RxReceivedCookiesInterceptor implements Interceptor {
     @Override
     public Response intercept(Chain chain) throws IOException {
         Response originalResponse = chain.proceed(chain.request());
@@ -29,12 +29,12 @@ public class ReceivedCookiesInterceptor implements Interceptor {
             for (String header : originalResponse.headers("Set-Cookie")) {
                 cookies.add(header);
             }
-            SPUtils.put(SPKeys.COOKIE,cookies);
+            RxSPUtils.put(RxSPKeys.COOKIE,cookies);
         }
         //获取服务器相应时间--用于计算倒计时的时间差
         if (!originalResponse.header("Date").isEmpty()){
             long date = dateToStamp(originalResponse.header("Date"));
-            SPUtils.put(SPKeys.DATE,date);
+            RxSPUtils.put(RxSPKeys.DATE,date);
         }
 
         return originalResponse;
